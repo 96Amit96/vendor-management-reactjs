@@ -96,3 +96,27 @@ export const deleteVendor = async (vendorId: number): Promise<string> => {
 export const deleteVendorsBulk = async (vendorIds: number[]) => {
   return axios.delete(`${API_URL}/bulk-delete`, { data: vendorIds });
 };
+
+export const downloadCsv = async (): Promise<Blob | null> => {
+  try{
+    const response = await axios.get(`${API_URL}/download-csv`, {
+      responseType: "blob",
+    });
+    return new Blob([response.data], {type: "text/csv"});
+  } catch (error) {
+    console.error("Error downloading Csv", error);
+    return null;
+  }
+}
+
+export const downloadXml = async (): Promise<Blob | null> => {
+  try {
+    const response = await axios.get(`${API_URL}/download-xml`, {
+      responseType: "blob",
+    });
+    return new Blob([response.data], { type: "application/xml" });
+  } catch (error) {
+    console.error("Error downloading XML", error);
+    return null;
+  }
+};

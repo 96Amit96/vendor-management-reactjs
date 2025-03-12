@@ -1,5 +1,5 @@
   import React, { useState } from "react";
-  import { searchVendors, deleteVendor, updateVendor, deleteVendorsBulk } from "../services/vendorService";
+  import { searchVendors, deleteVendor, updateVendor, deleteVendorsBulk, downloadXml, downloadCsv } from "../services/vendorService";
   import { Vendor } from "../types/vendor";
   import "bootstrap/dist/css/bootstrap.min.css";
 import UpdateVendorForm from "./updateVendorForm";
@@ -261,9 +261,45 @@ import UpdateVendorForm from "./updateVendorForm";
     }
   };
 
+  const handleDownloadXml = async () => {
+    const xmlBlob = await downloadXml();
+    if (xmlBlob) {
+      const url = window.URL.createObjectURL(xmlBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "vendors.xml";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  };
+
+
+  const handleDownloadCsv = async () => {
+    const csvBlob = await downloadCsv();
+    if (csvBlob) {
+      const url = window.URL.createObjectURL(csvBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "vendors.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } else {
+      alert("Failed to download Csv")
+    }
+  };
+
+
   return (
     <div className="mt-2">
       <h5 className="text-center">Vendor List</h5>
+
+        {/* ✅ Download Buttons */}
+      <button className="btn btn-success btn-sm me-2" onClick={handleDownloadCsv}>Download CSV</button>
+      <button className="btn btn-success btn-sm" onClick={handleDownloadXml}>Download XML</button>
+
+      
       
       {/* ✅ Multi-Delete Button */}
       {selectedVendors.length > 0 && (
