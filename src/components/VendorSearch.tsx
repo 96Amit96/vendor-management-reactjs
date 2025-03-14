@@ -1,5 +1,5 @@
   import React, { useState } from "react";
-  import { searchVendors, deleteVendor, updateVendor, deleteVendorsBulk, downloadXml, downloadCsv } from "../services/vendorService";
+  import { searchVendors, deleteVendor, updateVendor, downloadXml, downloadCsv, downloadExcel } from "../services/vendorService";
   import { Vendor } from "../types/vendor";
   import "bootstrap/dist/css/bootstrap.min.css";
 import UpdateVendorForm from "./updateVendorForm";
@@ -290,6 +290,22 @@ import UpdateVendorForm from "./updateVendorForm";
     }
   };
 
+   // ✅ Handle Excel Download
+   const handleDownloadExcel = async () => {
+    const excelBlob = await downloadExcel();
+    if (excelBlob) {
+      const url = window.URL.createObjectURL(excelBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "vendors.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } else {
+      alert("Failed to download Excel file!");
+    }
+  };
+
 
   return (
     <div className="mt-2">
@@ -297,7 +313,9 @@ import UpdateVendorForm from "./updateVendorForm";
 
         {/* ✅ Download Buttons */}
       <button className="btn btn-success btn-sm me-2" onClick={handleDownloadCsv}>Download CSV</button>
-      <button className="btn btn-success btn-sm" onClick={handleDownloadXml}>Download XML</button>
+      <button className="btn btn-success btn-sm me-2" onClick={handleDownloadXml}>Download XML</button>
+      <button className="btn btn-success btn-sm" onClick={handleDownloadExcel}>Download Excel</button>
+
 
       
       

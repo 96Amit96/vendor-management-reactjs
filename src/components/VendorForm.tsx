@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { addVendor, getCountries, getStatesByCountry, getCitiesByState } from "../services/vendorService";
+import { addVendor, getCountries, getStatesByCountry, getCitiesByState, uploadFile } from "../services/vendorService";
 import { Vendor } from "../types/vendor";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -35,6 +35,8 @@ const VendorForm: React.FC<VendorFormProps> = ({ onVendorAdded }) => {
   const [countries, setCountries] = useState<any[]>([]);
   const [states, setStates] = useState<any[]>([]);
   const [cities, setCities] = useState<any[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
     getCountries()
@@ -148,8 +150,49 @@ const VendorForm: React.FC<VendorFormProps> = ({ onVendorAdded }) => {
     }
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!selectedFile) {
+      alert("Please select a file!");
+      return;
+    }
+
+    setMessage("Uploading...");
+    const response = await uploadFile(selectedFile);
+
+    if (response) {
+      setMessage(response); // Show success message
+    } else {
+      setMessage("File upload failed. Please try again.");
+    }
+  };
+
   return (
     <div className="container-sm">
+      <div className="d-flex align-items-center gap-2" style={{ maxWidth: "250px" }}>
+  <input 
+    type="file" 
+    onChange={handleFileChange} 
+    className="form-control form-control-sm" 
+    style={{ fontSize: "12px", padding: "2px 4px" }} 
+  />
+
+  <button 
+    className="btn btn-primary btn-sm" 
+    style={{ fontSize: "12px", padding: "2px 8px" }} 
+    onClick={handleUpload}
+  >
+    Upload
+  </button>
+</div>
+
+{message && <p className="mt-1 text-muted" style={{ fontSize: "12px" }}>{message}</p>}
+
       <form onSubmit={handleSubmit} className="border p-2 bg-light rounded shadow-sm" style={{ maxWidth: "600px", fontSize: "14px" }}>
         <div className="row g-1">
           {[

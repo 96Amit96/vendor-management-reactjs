@@ -120,3 +120,37 @@ export const downloadXml = async (): Promise<Blob | null> => {
     return null;
   }
 };
+
+// ✅ Function to Download Excel File
+export const downloadExcel = async (): Promise<Blob | null> => {
+  try {
+    const response = await axios.get(`${API_URL}/download-excel`, {
+      responseType: "blob", // Ensures binary response for file download
+    });
+    return new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+  } catch (error) {
+    console.error("Error downloading Excel file:", error);
+    return null;
+  }
+};
+
+
+export const uploadFile = async (file: File): Promise<string | null> => {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await axios.post(`${API_URL}/upload`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data; // Success message from backend
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    return null;
+  }
+};
