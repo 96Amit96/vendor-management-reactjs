@@ -154,3 +154,13 @@ export const uploadFile = async (file: File): Promise<string | null> => {
     return null;
   }
 };
+
+export const fetchActivityLogs = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/activity-logs`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching activity logs:", error);
+    return [];
+  }
+};

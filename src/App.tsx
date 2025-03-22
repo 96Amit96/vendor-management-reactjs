@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import VendorForm from "./components/VendorForm";
 import VendorSearch from "./components/VendorSearch";
+import ActivityLogComponent from "./components/activityLogs";
 
 const App: React.FC = () => {
   return (
@@ -12,8 +13,11 @@ const App: React.FC = () => {
           <Link to="/create" className="btn btn-primary me-2">
             Create
           </Link>
-          <Link to="/search" className="btn btn-secondary">
+          <Link to="/search" className="btn btn-secondary me-2">
             Search
+          </Link>
+          <Link to="/activity" className="btn btn-secondary">
+            ActivityLog
           </Link>
         </nav>
 
@@ -21,7 +25,8 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/create" element={<VendorForm onVendorAdded={() => {}} />} />
           <Route path="/search" element={<VendorSearch/>} />
-          <Route path="/" element={<h4>Select "Create" or "Search"</h4>} />
+          <Route path="/activity" element={<ActivityLogComponent/>} />
+          
         </Routes>
       </div>
     </Router>
