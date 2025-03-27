@@ -3,6 +3,7 @@ import "./App.css";
 import VendorForm from "./components/VendorForm";
 import VendorSearch from "./components/VendorSearch";
 import ActivityLogComponent from "./components/activityLogs";
+import EmailForm from "./components/emailForm";
 
 const App: React.FC = () => {
   return (
@@ -16,6 +17,9 @@ const App: React.FC = () => {
           <Link to="/search" className="btn btn-secondary me-2">
             Search
           </Link>
+          <Link to="/email" className="btn btn-danger me-2">
+            Email
+          </Link>
           <Link to="/activity" className="btn btn-secondary">
             ActivityLog
           </Link>
@@ -25,6 +29,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/create" element={<VendorForm onVendorAdded={() => {}} />} />
           <Route path="/search" element={<VendorSearch/>} />
+          <Route path="/email" element={<EmailForm/>} />
           <Route path="/activity" element={<ActivityLogComponent/>} />
           
         </Routes>
